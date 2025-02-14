@@ -33,7 +33,6 @@ function OrderEditModal(props) {
   const handleEditDataChange = (e, key = null) => {
     const { name, type, value, checked } = e.target;
     let temp = orderDefaultValue;
-    console.log('name=',name);
     if (key !== null) {
       temp = {
         ...modalOrder,

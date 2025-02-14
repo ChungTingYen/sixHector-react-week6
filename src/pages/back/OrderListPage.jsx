@@ -100,10 +100,10 @@ export default function OrderListPage() {
   const handleOpenOrderModalWithValue = useCallback(
     (mode, orderId = null) => {
       if (mode === "edit") {
-        console.log(
-          "edit=",
-          orderData.find((order) => order.id === orderId) ?? {}
-        );
+        // console.log(
+        //   "edit=",
+        //   orderData.find((order) => order.id === orderId) ?? {}
+        // );
         let temp = orderData.find((order) => order.id === orderId);
         let products = temp.products;
         const filteredProducts = Object.keys(products).reduce((acc, key) => {
@@ -111,7 +111,7 @@ export default function OrderListPage() {
           acc[key] = { id, product_id, qty };
           return acc;
         }, {});
-        console.log("filteredProducts=", filteredProducts);
+        // console.log("filteredProducts=", filteredProducts);s
         let tempx = {
           data: {
             create_at: temp.create_at,

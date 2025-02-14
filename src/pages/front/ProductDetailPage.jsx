@@ -1,5 +1,6 @@
 import { useEffect, useState,useRef } from "react";
 import { useParams } from "react-router-dom";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import ReactLoading from "react-loading";
 import { apiService } from "../../apiService/apiService";
 import { setToastContent } from "../../utils/utils";
@@ -7,6 +8,8 @@ import { toastInfo } from "../../data/dataModel";
 import { Modal } from "../../component/common";
 import { Toast } from '../../component/common';
 const APIPath = import.meta.env.VITE_API_PATH;
+import 'react-lazy-load-image-component/src/effects/blur.css'; // 引入模糊效果的 CSS
+import PlaceholderImage from '../../img/loading.jpg'; 
 export default function ProductDetailPage() {
   const { id: productId } = useParams();
   const [product, setProduct] = useState({});
@@ -59,10 +62,15 @@ export default function ProductDetailPage() {
       <div className="container p-5">
         <div className="row">
           <div className="col-6">
-            <img
+            {/* <img */}
+            <LazyLoadImage
               className="img-fluid"
               src={product.imageUrl}
               alt={product.title}
+              placeholderSrc={PlaceholderImage}
+              effect="blur" // 可選，添加模糊效果
+              width="100%"
+              height="400%"
             />
           </div>
           <div className="col-6">
@@ -105,26 +113,32 @@ export default function ProductDetailPage() {
             </div>
           </div>
         </div>
-        <h5 className="mt-3">更多圖片：</h5>
-        <div className="d-flex flex-wrap">
-          { product.imagesUrl && product.imagesUrl
-            .filter((item) => item != "")
-            .map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                className="card-img-top primary-image me-2 mb-1"
-                alt={`更多圖片${index}`}
-                style={{
-                  width: "250px",
-                  height: "250px",
-                  objectFit: "cover",
-                  cursor: "pointer", // 這裡設置光標為手指圖樣
-                }}
-                onClick={() => handleImageClick(image)}
-              />
-            
-            ))}
+        <div className="row">
+          <div className="col-12">
+            <h5 className="mt-3">更多圖片：</h5>
+            <div className="d-flex flex-wrap">
+              { product.imagesUrl && product.imagesUrl
+                .filter((item) => item != "")
+                .map((image, index) => (
+                  // <img
+                  <LazyLoadImage
+                    key={index}
+                    src={image}
+                    className="card-img-top primary-image me-2 mb-1"
+                    alt={`更多圖片${index}`}
+                    style={{
+                      width: "250px",
+                      height: "250px",
+                      objectFit: "cover",
+                      cursor: "pointer", // 這裡設置光標為手指圖樣
+                    }}
+                    onClick={() => handleImageClick(image)}
+                    placeholderSrc={PlaceholderImage}
+                    effect="blur" // 可選，添加模糊效果
+                  />
+                ))}
+            </div>
+          </div>
         </div>
       </div>
       <Toast
