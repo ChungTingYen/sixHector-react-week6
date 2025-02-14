@@ -5,7 +5,7 @@ import {
   Pagination,
   Orders,
   OrderViewModal,
-  OrderEditModal2,
+  OrderEditModal,
   ProductDetailModal,
   OrderDeleteModal,
 } from "../../component/back";
@@ -132,13 +132,8 @@ export default function OrderListPage() {
         setIsEditModalOpen(true);
         editOrderId.current = orderId;
       } else if (orderId && mode === "view") {
-        console.log("orderId=", orderId);
         setEditProduct(
           () => orderData.find((order) => order.id === orderId) ?? {}
-        );
-        console.log(
-          "orderData=",
-          orderData.find((order) => order.id === orderId)
         );
         setModalMode(mode);
         setIsViewModalOpen(true);
@@ -204,7 +199,7 @@ export default function OrderListPage() {
       />
 
       <ToastContext.Provider value={toastContextValue}>
-        <OrderEditModal2
+        <OrderEditModal
           editProduct={editProduct}
           setModalMode={setModalMode}
           modalMode={modalMode}
