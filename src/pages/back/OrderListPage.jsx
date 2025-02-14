@@ -100,34 +100,31 @@ export default function OrderListPage() {
   const handleOpenOrderModalWithValue = useCallback(
     (mode, orderId = null) => {
       if (mode === "edit") {
-        // console.log(
-        //   "edit=",
-        //   orderData.find((order) => order.id === orderId) ?? {}
-        // );
         let temp = orderData.find((order) => order.id === orderId);
-        let products = temp.products;
-        const filteredProducts = Object.keys(products).reduce((acc, key) => {
-          const { id, product_id, qty } = products[key];
-          acc[key] = { id, product_id, qty };
-          return acc;
-        }, {});
-        // console.log("filteredProducts=", filteredProducts);s
-        let tempx = {
-          data: {
-            create_at: temp.create_at,
-            is_paid: temp.is_paid,
-            message: temp.message,
-            products: filteredProducts,
-            user: {
-              address: temp.user.address,
-              email: temp.user.email,
-              name: temp.user.name,
-              tel: temp.user.tel,
-            },
-            num: temp.num,
-          },
-        };
-        setEditProduct(tempx);
+        // let products = temp.products;
+        // const filteredProducts = Object.keys(products).reduce((acc, key) => {
+        //   const { id, product_id, qty } = products[key];
+        //   acc[key] = { id, product_id, qty };
+        //   return acc;
+        // }, {});
+        // console.log("filteredProducts=", filteredProducts);
+        let products = { data:temp };
+        // let tempx = {
+        //   data: {
+        //     create_at: temp.create_at,
+        //     is_paid: temp.is_paid,
+        //     message: temp.message,
+        //     products: filteredProducts,
+        //     user: {
+        //       address: temp.user.address,
+        //       email: temp.user.email,
+        //       name: temp.user.name,
+        //       tel: temp.user.tel,
+        //     },
+        //     num: temp.num,
+        //   },
+        // };
+        setEditProduct(products);
         setModalMode(mode);
         setIsEditModalOpen(true);
         editOrderId.current = orderId;
@@ -135,6 +132,7 @@ export default function OrderListPage() {
         setEditProduct(
           () => orderData.find((order) => order.id === orderId) ?? {}
         );
+        console.log('edit=',orderData.find((order) => order.id === orderId));
         setModalMode(mode);
         setIsViewModalOpen(true);
       }

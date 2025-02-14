@@ -34,19 +34,31 @@ function OrderEditModal(props) {
     const { name, type, value, checked } = e.target;
     let temp = orderDefaultValue;
     if (key !== null) {
+      const newQty = parseInt(value) <= 0 ? 1 : parseInt(value);
+      const newProduct = {
+        ...modalOrder.data.products[key],
+        qty:newQty,
+        final_total : newQty * modalOrder.data.products[key].product.price,
+        total : newQty * modalOrder.data.products[key].product.price
+      };
+      console.log('newProduct=',newProduct);
+      const updateProducts = {
+        ...modalOrder.data.products,
+        [key]:newProduct
+      };
+      const updateTotal = Object.values(updateProducts)
+        .reduce((acc,product)=>{
+          return acc + product.final_total;
+        },0);
       temp = {
         ...modalOrder,
-        data: {
+        data:{
           ...modalOrder.data,
-          products: {
-            ...modalOrder.data.products,
-            [key]: {
-              ...modalOrder.data.products[key],
-              qty: parseInt(value) <= 0 ? 1 : parseInt(value), // 將 value 替換為你想要設定的新數量
-            },
-          },
-        },
+          products:updateProducts,
+          total:updateTotal
+        }
       };
+      console.log('new products:',temp);
     } else if (name === "is_paid") {
       temp = {
         ...modalOrder,
@@ -113,6 +125,7 @@ function OrderEditModal(props) {
   }, []);
 
   useEffect(() => {
+    console.log('edit=',editProduct);
     if (isModalOpen) {
       if (Object.keys(editProduct).length > 0) setModalOrder(editProduct);
       openEditModal();

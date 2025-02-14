@@ -25,12 +25,22 @@ function OrderEditModal(props) {
   }, []);
 
   useEffect(() => {
+    // console.log('modalProduct=',modalProduct);
     if (isModalOpen) {
       if (Object.keys(editProduct).length > 0) setModalProduct(editProduct);
       openEditModal();
     }
   }, [isModalOpen, editProduct]);
 
+  const [expandedItems, setExpandedItems] = useState({});
+
+  const toggleExpand = (key) => {
+    // console.log('modalProduct=',modalProduct);
+    setExpandedItems((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
   return (
     <>
       <div
@@ -69,26 +79,47 @@ function OrderEditModal(props) {
                       </ul>
                       {Object.entries(modalProduct.products).map(
                         ([key, value], index) => {
+                          console.log([key, value]);
                           return (
                             <Fragment key={key}>
                               <span className="text-primary">
                                 訂購商品{index + 1}:
                               </span>
-                              <ul className="list-group">
-                                <li>Order product list ID: {key}</li>
-                                <li>Product product ID: {value.product?.id}</li>
-                                <li>Product Title: {value.product?.title}</li>
-                                <li>
-                                  Product Category: {value.product?.category}
-                                </li>
-                                <li>Product qty: {value.qty}</li>
-                                <li>
-                                  Product Origin Price:{" "}
-                                  {value.product?.origin_price}
-                                </li>
-                                <li>Product Price: {value.product?.price}</li>
-                                <li>Product Total: {value.total}</li>
-                              </ul>
+                              <div style={{  padding: '10px', width: '450px' }}>
+                                <div
+                                  onClick={()=>toggleExpand(key)}
+                                  style={{
+                                    cursor: 'pointer',
+                                    backgroundColor: '#f0f0f0',
+                                    padding: '10px',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                  }}
+                                >
+                                  <span>點擊展開/收起</span>
+                                  <span>{expandedItems[key] ? '🔼' : '🔽'}</span>
+                                </div>
+                                {expandedItems[key] && (
+                                  <div style={{ padding: '20px', backgroundColor: '#e9ecef' }}>
+                                    <ul className="list-group">
+                                      <li>Order product list ID: {key}</li>
+                                      <li>Product product ID: {value.product?.id}</li>
+                                      <li>Product Title: {value.product?.title}</li>
+                                      <li>
+                                        Product Category: {value.product?.category}
+                                      </li>
+                                      <li>Product qty: {value.qty}</li>
+                                      <li>
+                                          Product Origin Price:
+                                        {value.product?.origin_price}
+                                      </li>
+                                      <li>Product Price: {value.product?.price}</li>
+                                      <li>Product Total: {value.total}</li>
+                                    </ul>
+                                  </div>
+                                )}
+                              </div>
                               <hr />
                             </Fragment>
                           );
